@@ -1,175 +1,150 @@
 import math 
-# Coordenadas dos pontos 
-
-x1 = 1.0 
-y1 = 2.0 
-x2 = 4.0 
-y2 = 6.0 
-
-# Cálculo da distância usando o Teorema de Pitágoras 
-
-distancia = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5 
-
-print("A distância entre os pontos ({}, {}) e ({}, {}) é {}".format(x1,y1,x2,y2,distancia)) 
-
-# Coordenadas polares 
-
-DistPolar = 5.0 
-
-AnguloPolar = 45.0  # ângulo em graus 
-
-
-# Conversão de coordenadas polares para cartesianas 
-
-x = DistPolar * math.cos(math.radians(AnguloPolar)) 
-
-y = DistPolar * math.sin(math.radians(AnguloPolar)) 
-
-
-print("As coordenadas cartesianas correspondentes são ({:.2f}, {:.2f})".format(x,y)) 
-
- 
-
- 
 
 # Inicialização de variáveis 
+#UPMCC
+BaseMonit_x = 0 
+BaseMonit_y = 0 
 
-origem_x = 0 
+#Área Da Propriedade
+propriedade_x_sul = 0 
+propriedade_y_sul = 0 
 
-origem_y = 0 
+propriedade_x_norte = 0 
+propriedade_y_norte = 0 
 
-propriedade_x1 = 0 
+#Área Da fazenda
+sede_x_sul = 0
+sede_x_norte = 0
 
-propriedade_y1 = 0 
+sede_y_sul = 0
+sede_y_norte = 0
 
-propriedade_x2 = 0 
-
-propriedade_y2 = 0 
-
+#Variaveis dos Meteoros
 TotMeteoritos = 0 
-
 MeteoritosNaPropriedade = 0 
-
 MeteoritosNaSede = 0 
 
-QuadranteAtingido = [0, 0, 0, 0]  # [NE, NW, SW, SE] 
+Quadrante1 = 0  # NE
+Quadrante2 = 0  # NO 
+Quadrante3 = 0  # SO
+Quadrante4 = 0  # SE
+
+#Limitador de passagem para as opções 3 e 4
+trava = 0
 
 
 while True: 
 
     # Apresentar menu de opções 
-
-    print("Menu de Opções:") 
-
+    print("*"*100)
+    print("-:: Menu de Opções ::-") 
     print("1. Definir localização da propriedade e sede") 
-
     print("2. Configurar sobreposição de origem dos referenciais") 
-
-    print("3. Ler localização de meteoritos (terminar com distância negativa)") 
-
+    print("3. processar registros de chuva de meteoros") 
     print("4. Apresentar estatísticas") 
-
     print("5. Sair") 
-
+    print("*"*100)
  
+    escolha = int(input("Escolha uma opção: "))
 
-    escolha = input("Escolha uma opção: ") 
-
- 
-
-    if escolha == "1": 
+    if escolha == 1: 
 
         # Definir localização da propriedade e sede 
 
-        propriedade_x1 = float(input("Digite a coordenada x do canto inferior esquerdo da propriedade: ")) 
+        propriedade_x_sul = float(input("Digite a coordenada x do canto inferior esquerdo da propriedade: ")) 
+        propriedade_y_sul = float(input("Digite a coordenada y do canto inferior esquerdo da propriedade: ")) 
 
-        propriedade_y1 = float(input("Digite a coordenada y do canto inferior esquerdo da propriedade: ")) 
+        propriedade_x_norte = float(input("Digite a coordenada x do canto superior direito da propriedade: ")) 
+        propriedade_y_norte = float(input("Digite a coordenada y do canto superior direito da propriedade: ")) 
 
-        propriedade_x2 = float(input("Digite a coordenada x do canto superior direito da propriedade: ")) 
+        sede_x_sul = float(input("Digite a coordenada x do canto inferior esquerdo da sede: ")) 
+        sede_y_sul = float(input("Digite a coordenada y do canto inferior esquerdo da sede: ")) 
 
-        propriedade_y2 = float(input("Digite a coordenada y do canto superior direito da propriedade: ")) 
+        sede_x_norte = float(input("Digite a coordenada x do canto superior direito da sede: ")) 
+        sede_y_norte = float(input("Digite a coordenada y do canto superior direito da sede: "))  
 
-        origem_x += propriedade_x1 
+        
+    elif escolha == 2: 
 
-        origem_y += propriedade_y1 
-
-    elif escolha == "2": 
-
-        # Configurar sobreposição de origem dos referenciais 
-
-        origem_x = float(input("Digite a coordenada x da nova origem: ")) 
-
-        origem_y = float(input("Digite a coordenada y da nova origem: ")) 
-
- 
-
-    elif escolha == "3": 
-
-        # Ler localização de meteoritos 
-
-        while True: 
-
-            distancia = float(input("Digite a distância do meteorito (-1 para encerrar): ")) 
-
-            if distancia < 0: 
-
-                break 
-
-            angulo = float(input("Digite o ângulo do meteorito em relação ao eixo leste magnético: ")) 
-
-            x, y = converter_para_cartesianas(distancia, angulo) 
-
-            if propriedade_x1 <= x <= propriedade_x2 and propriedade_y1 <= y <= propriedade_y2: 
-
-                MeteoritosNaPropriedade += 1 
-
-            if calcular_distancia(x, y, origem_x, origem_y) <= 10: 
-
-                MeteoritosNaSede += 1 
-
-            if x >= origem_x and y >= origem_y: 
-
-                QuadranteAtingido[0] += 1  # NE 
-
-            elif x < origem_x and y >= origem_y: 
-
-                QuadranteAtingido[1] += 1  # NW 
-
-            elif x < origem_x and y < origem_y: 
-
-                QuadranteAtingido[2] += 1  # SW 
-
-            else: 
-
-                QuadranteAtingido[3] += 1  # SE 
-
-            TotMeteoritos += 1 
+        print("defina as cordenadas da Base de Monitoramento")
+        
+        BaseMonit_x = float(input("defina as cordenadas de X da base: "))
+        BaseMonit_y = float(input("defina as cordenadas de Y da base: "))
+        
+        trava =+ 1
 
  
+    elif escolha == 3: 
+        if trava == 1:
 
-    elif escolha == "4": 
+            # Ler localização de meteoritos 
+            print("PARA SAIR DO REGISTRO DIGITE -1 NA DISTÂNCIA")
+            while True: 
+                print ("registro # ", TotMeteoritos +1)
+                distancia = float(input(" -> Distância: ")) 
 
+                if distancia < 0: 
+                    break 
+
+                angulo = float(input(" -> Ângulo: ")) 
+                
+                CordCartesiano_x = (math.cos(angulo * ((2 * math.pi) / 360 )) * distancia)
+                CordCartesiano_y = (math.sin(angulo * ((2 * math.pi) / 360 )) * distancia)
+
+                #verificando se caiu na propriedade
+                if propriedade_x_sul <= CordCartesiano_x <= propriedade_x_norte and propriedade_y_sul <= CordCartesiano_y <= propriedade_y_norte: 
+                    MeteoritosNaPropriedade += 1 
+
+                #verificando se caiu na Sede
+                if sede_x_sul <= CordCartesiano_x <= sede_x_norte and sede_y_sul <= CordCartesiano_y <= sede_y_norte: 
+                    MeteoritosNaSede += 1 
+
+                #definindo em qual quadrante o meteoro caiu
+                if CordCartesiano_x >= 0 and CordCartesiano_y >= 0: 
+                    Quadrante1 += 1  # NE 
+                elif CordCartesiano_x >= 0 and CordCartesiano_y <= 0: 
+                    Quadrante2 += 1  # NO 
+                elif CordCartesiano_x <= 0 and CordCartesiano_y <= 0: 
+                    Quadrante3 += 1  # SE 
+                elif CordCartesiano_x <= 0 and CordCartesiano_y >= 0: 
+                    Quadrante4 += 1  # SO 
+
+                TotMeteoritos += 1 
+        else:
+            print("Impossível processar qualquer registro de queda no momento: localização da propriedade ainda não informada.")
+    
+
+    elif escolha == 4: 
+        if trava == 1:
         # Apresentar estatísticas 
 
-        print("Estatísticas:") 
+            print("-:: Estatísticas: ::-") 
 
-        print(f"Total de meteoritos: {TotMeteoritos}") 
+            print("Total de Quedas Registradas: {} ({:.2%})".format(TotMeteoritos,TotMeteoritos*100)) 
 
-        print(f"Meteoritos dentro da propriedade: {MeteoritosNaPropriedade}") 
+            print("Meteoritos dentro da propriedade: {} ({:.2%})".format(MeteoritosNaPropriedade, (MeteoritosNaPropriedade / TotMeteoritos)*100)) 
 
-        print(f"Meteoritos que atingiram a sede: {MeteoritosNaSede}") 
+            print("->NE: {} ({:.2%})".format(Quadrante1,(Quadrante1 / TotMeteoritos)))  
+            print("->NO: {} ({:.2%})".format(Quadrante2,(Quadrante2 / TotMeteoritos))) 
+            print("->SE: {} ({:.2%})".format(Quadrante3,(Quadrante3 / TotMeteoritos))) 
+            print("->SO: {} ({:.2%})".format(Quadrante4,(Quadrante4 / TotMeteoritos))) 
 
-        print(f"Quadrante mais atingido: NE: {QuadranteAtingido[0]}, NW: {QuadranteAtingido[1]}, SW: {QuadranteAtingido[2]}, SE: {QuadranteAtingido[3]}") 
-
+            if MeteoritosNaSede > 0 :
+                print("A Sede foi atingida? SIM")
+                print("Meteoritos que atingiram a sede: {} ({:.2%})".format(MeteoritosNaSede, (MeteoritosNaSede / TotMeteoritos)*100))
+            else:
+                print("A Sede foi atingida? NÃO")
+               
+        else:
+            
+            print("Impossível processar qualquer registro de queda no momento: não foi feita a unificação dos sistemas referenciais usados nos cálculos.")
  
 
-    elif escolha == "5": 
+    elif escolha == 5: 
 
         # Sair do programa 
 
         break 
-
- 
 
     else: 
 
