@@ -50,19 +50,24 @@ while True:
     if escolha == 1: 
 
         # Definir localização da propriedade e sede 
-
+        print("-"*100)
+        print("-"*100)
+        
         propriedade_x_sul = float(input("Digite a coordenada x do canto inferior esquerdo da propriedade: ")) 
         propriedade_y_sul = float(input("Digite a coordenada y do canto inferior esquerdo da propriedade: ")) 
 
         propriedade_x_norte = float(input("Digite a coordenada x do canto superior direito da propriedade: ")) 
         propriedade_y_norte = float(input("Digite a coordenada y do canto superior direito da propriedade: ")) 
 
+        print("\nentre as coordenadas da Sede:\n")
         sede_x_sul = float(input("Digite a coordenada x do canto inferior esquerdo da sede: ")) 
         sede_y_sul = float(input("Digite a coordenada y do canto inferior esquerdo da sede: ")) 
 
         sede_x_norte = float(input("Digite a coordenada x do canto superior direito da sede: ")) 
         sede_y_norte = float(input("Digite a coordenada y do canto superior direito da sede: "))  
 
+        print("-"*100)
+        print("-"*100)
         
     elif escolha == 2: 
 
@@ -87,29 +92,30 @@ while True:
                     break 
 
                 angulo = float(input(" -> Ângulo: ")) 
+                print("*"*100)
                 
-                CordCartesiano_x = (math.cos(angulo * ((2 * math.pi) / 360 )) * distancia)
-                CordCartesiano_y = (math.sin(angulo * ((2 * math.pi) / 360 )) * distancia)
+                Cordenada_Cartesiano_x = (math.cos(angulo * ((2 * math.pi) / 360 )) * distancia) + BaseMonit_x
+                Cordenada_Cartesiano_y = (math.sin(angulo * ((2 * math.pi) / 360 )) * distancia) + BaseMonit_y
 
                 #verificando se caiu na propriedade
-                if propriedade_x_sul <= CordCartesiano_x <= propriedade_x_norte and propriedade_y_sul <= CordCartesiano_y <= propriedade_y_norte: 
+                if propriedade_x_norte <= Cordenada_Cartesiano_x <= propriedade_x_sul and propriedade_y_sul <= Cordenada_Cartesiano_y <= propriedade_y_norte: 
                     MeteoritosNaPropriedade += 1 
-
-                #verificando se caiu na Sede
-                if sede_x_sul <= CordCartesiano_x <= sede_x_norte and sede_y_sul <= CordCartesiano_y <= sede_y_norte: 
-                    MeteoritosNaSede += 1 
-
-                #definindo em qual quadrante o meteoro caiu
-                if CordCartesiano_x >= 0 and CordCartesiano_y >= 0: 
-                    Quadrante1 += 1  # NE 
-                elif CordCartesiano_x >= 0 and CordCartesiano_y <= 0: 
-                    Quadrante2 += 1  # NO 
-                elif CordCartesiano_x <= 0 and CordCartesiano_y <= 0: 
-                    Quadrante3 += 1  # SE 
-                elif CordCartesiano_x <= 0 and CordCartesiano_y >= 0: 
-                    Quadrante4 += 1  # SO 
+                    
+                    #definindo em qual quadrante o meteoro caiu
+                    if Cordenada_Cartesiano_x >= 0 and Cordenada_Cartesiano_y >= 0: 
+                        Quadrante1 += 1  # NE 
+                    elif Cordenada_Cartesiano_x <= 0 and Cordenada_Cartesiano_y >= 0: 
+                        Quadrante2 += 1  # NO 
+                    elif Cordenada_Cartesiano_x >= 0 and Cordenada_Cartesiano_y <= 0: 
+                        Quadrante3 += 1  # SE 
+                    else: 
+                        Quadrante4 += 1  # SO 
 
                 TotMeteoritos += 1 
+                
+                #verificando se caiu na Sede
+                if sede_x_norte <= Cordenada_Cartesiano_x <= sede_x_sul and sede_y_sul <= Cordenada_Cartesiano_y <= sede_y_norte:
+                    MeteoritosNaSede += 1 
         else:
             print("Impossível processar qualquer registro de queda no momento: localização da propriedade ainda não informada.")
     
@@ -120,32 +126,30 @@ while True:
 
             print("-:: Estatísticas: ::-") 
 
-            print("Total de Quedas Registradas: {} ({:.2%})".format(TotMeteoritos,TotMeteoritos*100)) 
+            print("Total de Quedas Registradas: {} ({:.2%})".format(TotMeteoritos,(TotMeteoritos / TotMeteoritos)))
 
-            print("Meteoritos dentro da propriedade: {} ({:.2%})".format(MeteoritosNaPropriedade, (MeteoritosNaPropriedade / TotMeteoritos)*100)) 
+            print("Meteoritos dentro da propriedade: {} ({:.2%})".format(MeteoritosNaPropriedade, (MeteoritosNaPropriedade / TotMeteoritos))) 
 
-            print("->NE: {} ({:.2%})".format(Quadrante1,(Quadrante1 / TotMeteoritos)))  
-            print("->NO: {} ({:.2%})".format(Quadrante2,(Quadrante2 / TotMeteoritos))) 
-            print("->SE: {} ({:.2%})".format(Quadrante3,(Quadrante3 / TotMeteoritos))) 
-            print("->SO: {} ({:.2%})".format(Quadrante4,(Quadrante4 / TotMeteoritos))) 
+            print("->NE: {} ({:.2%})".format(Quadrante1,(Quadrante1 / MeteoritosNaPropriedade)))  
+            print("->NO: {} ({:.2%})".format(Quadrante2,(Quadrante2 / MeteoritosNaPropriedade))) 
+            print("->SE: {} ({:.2%})".format(Quadrante3,(Quadrante3 / MeteoritosNaPropriedade))) 
+            print("->SO: {} ({:.2%})".format(Quadrante4,(Quadrante4 / MeteoritosNaPropriedade)))
+            print(MeteoritosNaSede) 
 
             if MeteoritosNaSede > 0 :
                 print("A Sede foi atingida? SIM")
-                print("Meteoritos que atingiram a sede: {} ({:.2%})".format(MeteoritosNaSede, (MeteoritosNaSede / TotMeteoritos)*100))
+                print("Meteoritos que atingiram a sede: {} ({:.2%})".format(MeteoritosNaSede, (MeteoritosNaSede / TotMeteoritos)))
+           
             else:
                 print("A Sede foi atingida? NÃO")
                
         else:
-            
             print("Impossível processar qualquer registro de queda no momento: não foi feita a unificação dos sistemas referenciais usados nos cálculos.")
  
 
     elif escolha == 5: 
-
         # Sair do programa 
-
         break 
 
     else: 
-
         print("Opção inválida. Por favor, escolha uma opção válida.") 
